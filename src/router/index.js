@@ -1,15 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/form'
+import App from '@/App'
+import Form from '@/components/form/form'
 
 Vue.use(Router)
 
 export default new Router({
+  'linkActiveClass': 'active',
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      component: App,
+      children: [
+        { path: '/form', component: Form, name: 'form', class: 'fa-newspaper-o'}
+      ]
     }
   ]
 })
