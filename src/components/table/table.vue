@@ -34,11 +34,14 @@
             </template>
           </el-table-column>
         </el-table>
-				<div class="block">
-
-				</div>
+        <div class="block">
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="100" layout="prev, pager, next, jumper" :total="1000"></el-pagination>
+        </div>
       </el-col>
     </el-row>
+    <el-dialog title="Modify Personal Infomation" :visible="dialogFormVisible" size="tiny">
+
+    </el-dialog>
   </section>
 </template>
 <script>
@@ -57,7 +60,13 @@ export default {
         name: '1',
         address: '1',
         date: '1',
-      }],
+      },
+      {
+        name: '2',
+        address: '2',
+        date: '2',
+      }
+      ],
       options: [],
       places: [],
       dialogFormVisible: false,
@@ -79,8 +88,21 @@ export default {
 
     },
     handleEdit(index, row) {
+      this.dialogFormVisible = true;
+      this.form = Object.assign({}, row);
+      this.table_index = index;
+    },
+    download() {
 
     },
+    handleSizeChange(val) {
+      console.log(`${val} line pre-page`);
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      console.log(`${val} in pages`);
+    }
+
   }
 }
 </script>
