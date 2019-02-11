@@ -40,7 +40,21 @@
       </el-col>
     </el-row>
     <el-dialog title="Modify Personal Infomation" :visible="dialogFormVisible" size="tiny">
-
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="姓名">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="地址">
+          <el-input v-model="form.address"></el-input>
+        </el-form-item>
+        <el-form-item label="出生日期">
+          <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 100%;"></el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSave" :loading="editLoading">修改</el-button>
+          <el-button @click="dialogFormVisible = false">取消</el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </section>
 </template>
@@ -85,12 +99,39 @@ export default {
       this.$message('mock data, the method is not function');
     },
     handleDelete(index, row) {
-
+      this.tableData.splice(index, 1);
+      this.$message({
+        message: "操作成功！",
+        type: 'success'
+      });
     },
     handleEdit(index, row) {
       this.dialogFormVisible = true;
       this.form = Object.assign({}, row);
       this.table_index = index;
+    },
+    handleSave() {
+      this.$confirm('确认提交么？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        cancelButtonClass: 'cancel'
+      }).then(() => {
+        this.editLoading = true;
+        let date = this.form.date;
+        if (typeof date === 'object') {
+          date = [date.getFullYear(), (date.getMonth() + 1), (date.getDate())].join('-');
+          this.form.date = date;
+        }
+        this.tableData.splice(this.table_index, 1, this.form);
+        this.$message({
+          message: "操作成功！",
+          type: 'sucess'
+        });
+        this.editLoading = false;
+        this.dialogFormVisible = false;
+      }).catch(() => {
+
+      });
     },
     download() {
 
@@ -107,4 +148,12 @@ export default {
 }
 </script>
 <style>
+.el-pagination {
+  text-align: center;
+  margin-top: 30px;
+}
+.el-message-box_btns .cancel {
+  float: right;
+  margin-left: 10px;
+}
 </style>
