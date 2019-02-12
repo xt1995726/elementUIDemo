@@ -94,6 +94,21 @@ export default {
       table_index: 999,
     };
   },
+  created() {
+    this.$http.get('/api/getTable').then((response) => {
+      response = response.data;
+      if (response.code === '000') {
+        this.tableData = response.datas;
+      }
+    });
+    this.$http.get('/api/getOptions').then((response) => {
+      response = response.data;
+      if (response.code === '000') {
+        this.options = response.datas;
+        this.places = response.places;
+      }
+    });
+  },
   methods: {
     onSubmit() {
       this.$message('mock data, the method is not function');
